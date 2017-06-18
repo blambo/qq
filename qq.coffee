@@ -40,11 +40,21 @@ class QqPromise
 
   finally: (fn) => @promise.finally fn
 
-  spread: (fulfilled, rejected) => @promise.spread fulfilled, rejected
+  all: (fn) => @promise.all @_wrap fn
+
+  spread: (fulfilled, rejected) =>
+    return @all().then((array) =>
+      if fulfilled
+        fulfilled = @_wrap fulfilled
+      if rejected
+        rejected = @_wrap rejected
+      @cxt ?= process._qq_cxt
+      return fulfilled.apply null, array
+    , rejected)
 
   _wrap: (fn) ->
-    (v) =>
-      withContext @cxt, -> fn(v)
+    (args...) =>
+      withContext @cxt, -> fn.apply null, args
 
 withContext = (cxt, block) ->
   orig = process._qq_cxt
