@@ -42,18 +42,8 @@ class QqPromise
 
   all: (fn) => @promise.all @_wrap fn
 
-  # spread: (fulfilled, rejected) =>
-  #   return @all().then((array) =>
-  #     if fulfilled
-  #       fulfilled = @_wrap fulfilled
-  #     if rejected
-  #       rejected = @_wrap rejected
-  #     @cxt ?= process._qq_cxt
-  #     return fulfilled.apply null, array
-  #   , rejected)
-
   spread: (fulfilled, rejected) =>
-    @cxt ?= proccess._qq_cxt
+    @cxt ?= process._qq_cxt
     if fulfilled
       fulfilled = @_wrap fulfilled
     if rejected
