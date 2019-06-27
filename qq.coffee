@@ -128,19 +128,9 @@ class Qq
   withContext: withContext
 
   newThread: (name, block) =>
-    if not @log
-      @log = require('lib/log')('qq')
-
     @resolve(null, {_desc:name})
     .then =>
-      @log.info 'begin thread', name
-
       return block()
-    .fail (er) ->
-      @log.error er
-    .fin ->
-      @log.info 'finished thread', name
-
     return
 
   maybeContext: => process._qq_cxt
